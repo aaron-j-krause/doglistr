@@ -1,0 +1,32 @@
+h1, p {
+  font-family: Lato;
+}
+
+main div {
+  float: left;
+}
+
+main div:first-child {
+  border-right: 1px solid black;
+}
+.all-dogs {
+  width: 60%;
+}
+
+.your-dogs {
+  width: 35%;
+}
+
+.dog-frame {
+  height: 100px;
+  width: 100px;
+  border-radius: 100px;
+  float: left;
+  overflow: hidden;
+  margin: 5px;
+}
+
+.dog-picture {
+  max-height: 150%;
+  max-width: 150%;
+}
