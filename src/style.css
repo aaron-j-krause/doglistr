@@ -1,9 +1,47 @@
-h1, p {
-  font-family: Lato;
+body {
+  background-color: rgb(188, 233, 195);
 }
 
-main div {
+h1, h2 {
+  font-family: Lato, Arial;
+}
+
+main {
+  margin: 0 auto;
+  width: 90%;
+  background-color: rgb(162, 184, 118);
+  padding: 10px 20px;
+}
+
+main ul {
+  padding: 0px;
+}
+
+main h2 {
+  text-align: center;
+}
+
+main select {
+  float: right;
+  height: 30px;
+  width: 200px;
+  margin-top: 15px;
+}
+
+main h1 {
   float: left;
+}
+
+nav:after, main:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+main > div {
+  float: left;
+  height: 500px;
+  overflow: scroll;
 }
 
 main div:first-child {
@@ -15,6 +53,7 @@ main div:first-child {
 
 .your-dogs {
   width: 35%;
+  margin-left: 20px;
 }
 
 .dog-frame {
