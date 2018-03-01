@@ -1,83 +1,67 @@
 // Model for collection of dogs
-export function DogCollection(listId, dogs) {
-  dogs = dogs || [];
-  this.dogs = dogs;
-  this.listId = listId;
-};
+export class DogCollection {
+  constructor(listId, dogs = []) {
+    this.dogs = dogs;
+    this.listId = listId;
+  }
 
-DogCollection.breedList = [];
+  breedList = []
 
-DogCollection.parseBreed = function(breed) {
-  if (breed.indexOf('-') === -1) return { breedName: breed };
+  static parseBreed(breed) {
+    if (!breed.includes('-')) return { breedName: breed };
+    const [subBreedName, breedName] = breed.split('-');
 
-  var breedArray = breed.split('-');
-  var breedName = breedArray[1];
-  var subBreedName = breedArray[0];
-  var parsed = {
-    breedName: breedName,
-    subBreedName: subBreedName
-  };
+    return { subBreedName, breedName };
+  }
 
-  return parsed;
-};
+  static populateBreeds(breeds) {
+    DogCollection.breedList = Object.keys(breeds)
+     .reduce((breedList, breedName) => {
+       const subBreeds = breeds[breedName]
+         .map(subBreedName => `${subBreedName}-${breedName}`);
+       return subBreeds.length ? [...breedList, ...subBreeds] : [...breedList, breedName];
+     }, []);
+  }
 
-DogCollection.populateBreeds = function(breeds) {
- var breedList = [];
+  frameImage(img) {
+    const frame = document.createElement('div');
 
- Object.keys(breeds).forEach(function(breedName) {
-   if (breeds[breedName]) {
-     breeds[breedName].forEach(function(subBreed) {
-       breedList.push(subBreed + '-' + breedName);
-     });
-   } else {
-      breedList.push(breedName);
-   }
- });
+    frame.classList.add('dog-frame');
+    frame.appendChild(img);
 
- DogCollection.breedList = breedList;
-};
+    return frame;
+  }
 
-DogCollection.prototype.frameImage = function(img) {
-  var frame = document.createElement('div');
+  renderCollection(clickHandler) {
+    const dogList = document.getElementById(this.listId);
+    dogList.textContent = null;
 
-  frame.classList.add('dog-frame');
-  frame.appendChild(img);
+    this.dogs.forEach(dog => {
+      const dogImg = document.createElement('img');
+      const framed = this.frameImage(dogImg);
+      if (clickHandler) framed.addEventListener('click', clickHandler);
 
-  return frame;
-};
+      dogImg.src = dog;
+      dogImg.classList.add('dog-picture');
+      dogList.appendChild(framed);
+    });
+  }
+}
 
-DogCollection.prototype.renderCollection = function(clickHandler) {
-  var self = this;
-  var dogList = document.getElementById(this.listId);
-  var dogImg;
-  var framed;
+export class UserCollection extends DogCollection {
+  constructor(dogs, listId) {
+    super(dogs, listId);
 
-  dogList.textContent = null;
+    this.uniqueDogs = this.dogs.reduce((dog, uniqueDogs) => {
+      uniqueDogs[dog] = true;
+      return uniqueDogs;
+    }, {});
+  }
 
-  this.dogs.forEach(function(dog) {
-    dogImg = document.createElement('img');
-    framed = self.frameImage(dogImg);
-    if (clickHandler) framed.addEventListener('click', clickHandler);
-
-    dogImg.src = dog;
-    dogImg.classList.add('dog-picture');
-    dogList.appendChild(framed);
-  });
-};
-
-export function UserCollection(dogs, listId, clickHandler) {
-  DogCollection.call(this, dogs, listId, clickHandler);
-
-  this.uniqueDogs = {};
-  this.dogs.forEach(function(dog) {
+  addDog(dog) {
+    if (!dog || this.uniqueDogs[dog]) return;
     this.uniqueDogs[dog] = true;
-  });
-};
+    this.dogs.push(dog);
+  }
+}
 
-UserCollection.prototype = Object.create(DogCollection.prototype);
-
-UserCollection.prototype.addDog = function(dog) {
-  if (!dog || this.uniqueDogs[dog]) return;
-  this.uniqueDogs[dog] = true;
-  this.dogs.push(dog);
-};
