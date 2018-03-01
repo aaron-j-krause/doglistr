@@ -19,20 +19,29 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    
+
   <title>doglistr</title>
   </head>
   <body>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
-    <select id="breed-selector"><option> - </option></select>
+
 <main>
+
+  <nav>
+    <h1>Doglistr</h1>
+    <select id="breed-selector">
+      <option> - </option>
+    </select>
+  </nav>
   <div class="all-dogs">
-    <ul id="all-dogs-list"></ul>
+    <h2>All Dogs</h1>
+    <div id="all-dogs-list"></div>
   </div>
   <div class="your-dogs">
-    <ul id="your-dogs-list"></ul>
+    <h2>Good Dogs</h1>
+    <div id="your-dogs-list"></div>
   </div>
 </main>
 
